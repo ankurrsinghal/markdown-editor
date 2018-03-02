@@ -2,11 +2,26 @@
   <div class="main">
       <div class="sidebar"></div>
       <div class="content">
-        <div class="editor"></div>
+        <editor v-model="content"></editor>
         <div class="renderer"></div>
       </div>
   </div>
 </template>
+
+<script>
+import Editor from './components/Editor'
+
+export default {
+  data () {
+    return {
+      content: ''
+    }
+  },
+  components: {
+    Editor
+  }
+}
+</script>
 
 <style>
 .main {
@@ -28,6 +43,10 @@
 .editor,
 .renderer {
   flex-basis: 50%;
+}
+
+.editor{
+    border-right: 2px solid #ddd;
 }
 
 </style>
