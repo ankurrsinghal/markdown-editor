@@ -1,26 +1,29 @@
-import Vue from 'vue'
+import { mount } from '@vue/test-utils'
 import App from '@/App'
 
 describe('App.vue', () => {
-  let vm
-  beforeAll(() => {
-    const Constructor = Vue.extend(App)
-    vm = new Constructor().$mount()
+  let wrapper
+  beforeEach(() => {
+    wrapper = mount(App)
   })
 
   test('it should have a sidebar', () => {
-    expect(vm.$el.querySelector('.sidebar')).not.toBeNull()
+    expect(wrapper.contains('.sidebar')).toBe(true)
   })
 
   test('it should have a content panel', () => {
-    expect(vm.$el.querySelector('.content')).not.toBeNull()
+    expect(wrapper.contains('.content')).toBe(true)
   })
 
   test('it\'s content panel should have an editor', () => {
-    expect(vm.$el.querySelector('.content .editor')).not.toBeNull()
+    expect(wrapper.contains('.content .editor')).toBe(true)
   })
 
   test('it\'s content panel should have an renderer', () => {
-    expect(vm.$el.querySelector('.content .renderer')).not.toBeNull()
+    expect(wrapper.contains('.content .renderer')).toBe(true)
+  })
+
+  test('it\'s sidebar should have a file-form', () => {
+    expect(wrapper.contains('.sidebar .file-form')).toBe(true)
   })
 })

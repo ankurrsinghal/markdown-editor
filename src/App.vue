@@ -1,6 +1,8 @@
 <template>
   <div class="main">
-      <div class="sidebar"></div>
+      <div class="sidebar">
+        <file-form></file-form>
+      </div>
       <div class="content">
         <editor v-model="content"></editor>
         <renderer :markdown="content"></renderer>
@@ -11,6 +13,7 @@
 <script>
 import Editor from './components/Editor'
 import Renderer from './components/Renderer'
+import FileForm from './components/FileForm'
 
 export default {
   data () {
@@ -20,7 +23,8 @@ export default {
   },
   components: {
     Editor,
-    Renderer
+    Renderer,
+    FileForm
   }
 }
 </script>
@@ -39,6 +43,7 @@ export default {
 .sidebar {
   flex-basis: 20%;
   background-color: #eee;
+  padding: 1em;
 }
 
 .content {
