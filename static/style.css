@@ -7,3 +7,13 @@
 body {
     margin: 0;
 }
+
+pre {
+  padding: 1em;
+  background-color: #f8f8f8;
+}
+
+pre code {
+  font-family: 'Ubuntu Mono', monospace;  
+  font-size: .875rem;
+}

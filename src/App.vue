@@ -3,13 +3,14 @@
       <div class="sidebar"></div>
       <div class="content">
         <editor v-model="content"></editor>
-        <div class="renderer"></div>
+        <renderer :markdown="content"></renderer>
       </div>
   </div>
 </template>
 
 <script>
 import Editor from './components/Editor'
+import Renderer from './components/Renderer'
 
 export default {
   data () {
@@ -18,7 +19,8 @@ export default {
     }
   },
   components: {
-    Editor
+    Editor,
+    Renderer
   }
 }
 </script>
@@ -28,6 +30,10 @@ export default {
   height: 100vh;
   display: flex;
   overflow: hidden;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
 }
 
 .sidebar {

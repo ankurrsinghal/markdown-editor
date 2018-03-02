@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Editor from '@/components/Editor'
 
-describe('App.vue', () => {
+describe('Editor.vue', () => {
   let vm
   let Constructor
   beforeAll(() => {
