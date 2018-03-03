@@ -1,7 +1,10 @@
 <template>
   <div class="main">
       <div class="sidebar">
-        <file-form></file-form>
+        <file-form @submit="createFile"></file-form>
+        <div class="files-list">
+          <file-view v-for="(file, index) in files" :name="file.name" :key="index"></file-view>
+        </div>
       </div>
       <div class="content">
         <editor v-model="content"></editor>
@@ -14,17 +17,27 @@
 import Editor from './components/Editor'
 import Renderer from './components/Renderer'
 import FileForm from './components/FileForm'
+import FileView from './components/FileView'
 
 export default {
   data () {
     return {
-      content: ''
+      content: '',
+      files: []
+    }
+  },
+  methods: {
+    createFile (name) {
+      this.files.push({
+        name
+      })
     }
   },
   components: {
     Editor,
     Renderer,
-    FileForm
+    FileForm,
+    FileView
   }
 }
 </script>
@@ -58,6 +71,10 @@ export default {
 
 .editor{
     border-right: 2px solid #ddd;
+}
+
+.files-list {
+  margin-top: 1.5em;
 }
 
 </style>

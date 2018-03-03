@@ -1,6 +1,6 @@
 <template>
   <div class="file-form">
-    <form @submit="submit">
+    <form @submit.prevent="submit">
       <input v-model="name" type="text" placeholder="File Name" />
       <button type="submit">
         <i class="fas fa-plus"></i>
@@ -11,6 +11,7 @@
 
 <script>
 export default {
+  name: 'FileForm',
   data () {
     return {
       name: ''
@@ -22,6 +23,7 @@ export default {
         return
       }
       this.$emit('submit', this.name)
+      this.name = ''
     }
   }
 }
