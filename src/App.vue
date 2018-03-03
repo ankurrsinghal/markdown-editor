@@ -7,8 +7,13 @@
         </div>
       </div>
       <div class="content">
-        <editor v-model="content"></editor>
-        <renderer :markdown="content"></renderer>
+        <template v-if="selectedFile">
+          <editor v-model="selectedFile.content"></editor>
+          <renderer :markdown="selectedFile.content"></renderer>
+        </template>
+        <div v-else class="no-file-selected">
+          <h1>Please select a file.</h1>
+        </div>
       </div>
   </div>
 </template>
@@ -22,7 +27,7 @@ import FileView from './components/FileView'
 export default {
   data () {
     return {
-      content: '',
+      selectedFile: null,
       files: []
     }
   },
@@ -75,6 +80,19 @@ export default {
 
 .files-list {
   margin-top: 1.5em;
+}
+
+.no-file-selected {
+  flex-basis: 100%;
+  background-color: #f9fafa;
+  color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-file-selected h1 {
+  font-size: 50px;
 }
 
 </style>
