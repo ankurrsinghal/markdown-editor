@@ -4,21 +4,20 @@ import FileView from '@/components/FileView'
 describe('App.vue', () => {
   let wrapper
   beforeEach(() => {
-    wrapper = mount(FileView)
+    wrapper = mount(FileView, {
+      propsData: {
+        file: {
+          name: 'New File',
+          selected: false,
+          favorite: false,
+          content: ''
+        }
+      }
+    })
   })
 
   test('it should have a class file-view', () => {
     expect(wrapper.classes()).toContain('file-view')
-  })
-
-  test('it should have display the name of the file passed as prop in a div of class file-name', () => {
-    let wrapper = mount(FileView, {
-      propsData: {
-        name: 'New File'
-      }
-    })
-    expect(wrapper.contains('.file-name')).toBe(true)
-    expect(wrapper.find('.file-name').text()).toBe('New File')
   })
 
   test('it should have an actions group of class actions-group which has elements of classes file-edit, file-remove and file-fav', () => {
@@ -64,5 +63,30 @@ describe('App.vue', () => {
     input.trigger('keyup.enter')
     expect(wrapper.emitted().rename).toBeTruthy()
     expect(wrapper.emitted().rename[0]).toEqual(['New File 2'])
+  })
+
+  test('it should have display the name of the file from the file object passed to it as a prop in a div of class file-name', () => {
+    expect(wrapper.contains('.file-name')).toBe(true)
+    expect(wrapper.find('.file-name').text()).toBe('New File')
+  })
+
+  test('it should have a class .selected if selected is true', () => {
+    wrapper.setProps({
+      file: Object.assign(wrapper.vm.file, { selected: true })
+    })
+    expect(wrapper.classes()).toContain('selected')
+  })
+
+  test('it should have a class .favorite if favorite is true', () => {
+    wrapper.setProps({
+      file: Object.assign(wrapper.vm.file, { favorite: true })
+    })
+    expect(wrapper.classes()).toContain('favorite')
+  })
+
+  test('it should emit an event fileClick when clicked on .file-view', () => {
+    wrapper.find('.file-view').trigger('click')
+    expect(wrapper.emitted().fileClick).toBeTruthy()
+    expect(wrapper.emitted().fileClick[0][0]).toEqual({ name: 'New File', selected: false, favorite: false, content: '' })
   })
 })

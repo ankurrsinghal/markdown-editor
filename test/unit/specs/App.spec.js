@@ -51,4 +51,40 @@ describe('App.vue', () => {
     expect(wrapper.contains('.renderer')).toBe(true)
     expect(wrapper.contains('.no-file-selected')).toBe(false)
   })
+
+  test('it should push a valid file object in files data property when createFile is called', () => {
+    let expectedFile = {
+      name: 'New File',
+      selected: false,
+      favorite: false,
+      content: ''
+    }
+    wrapper.vm.createFile('New File')
+    expect(wrapper.vm.files).toEqual([expectedFile])
+  })
+
+  test('it should set the selectedFile to the file object referenced by .file-view when clicked on it and also flip the selected value to true', () => {
+    let expectedFile = {
+      name: 'New File',
+      selected: true,
+      favorite: false,
+      content: ''
+    }
+    wrapper.vm.createFile(expectedFile.name)
+    wrapper.update()
+    let onlyFileView = wrapper.find('.file-view')
+    onlyFileView.trigger('click')
+    expect(wrapper.vm.selectedFile).toEqual(expectedFile)
+  })
+
+  test('it should have only one .file-view which has .selected class on it', () => {
+    wrapper.vm.createFile('New File')
+    wrapper.vm.createFile('New File 2')    
+    wrapper.update()
+    let fileViews = wrapper.findAll('.file-view')
+    fileViews.wrappers[0].trigger('click')
+    fileViews.wrappers[1].trigger('click')
+    let selectedFileViews = wrapper.findAll('.file-view.selected')
+    expect(selectedFileViews.length).toBe(1)
+  })
 })
