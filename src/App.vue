@@ -3,7 +3,15 @@
       <div class="sidebar">
         <file-form @submit="createFile"></file-form>
         <div class="files-list">
-          <file-view v-for="(file, index) in files" @fileClick="selectFile" :file="file" :key="index"></file-view>
+          <file-view
+            v-for="(file, index) in files"
+            @fileClick="selectFile"
+            @delete="removeFile(file)"
+            @favorite="file.favorite ^= true"
+            @rename="renameFile"
+            :file="file"
+            :key="index">
+          </file-view>
         </div>
       </div>
       <div class="content">
@@ -46,6 +54,12 @@ export default {
       }
       file.selected = true
       this.selectedFile = file
+    },
+    removeFile (file) {
+      this.files.splice(this.files.indexOf(file), 1)
+    },
+    renameFile (file, newName) {
+      file.name = newName
     }
   },
   components: {

@@ -55,14 +55,13 @@ describe('App.vue', () => {
     expect(wrapper.vm.editing).toBe(!initialValueOfEditing)
   })
 
-  test('it should toggle editing when clicked on .file-edit', () => {
-    wrapper.setProps({ name: 'New File' })
+  test('it should emit the event rename when input in .file-view is submitted by pressing enter', () => {
     wrapper.setData({ editing: true })
     let input = wrapper.find('.file-name input[type="text"]')
     wrapper.setData({ fileName: 'New File 2' })
     input.trigger('keyup.enter')
     expect(wrapper.emitted().rename).toBeTruthy()
-    expect(wrapper.emitted().rename[0]).toEqual(['New File 2'])
+    // expect(wrapper.find('.file-name input[type="text"]')).toBeNull()
   })
 
   test('it should have display the name of the file from the file object passed to it as a prop in a div of class file-name', () => {
