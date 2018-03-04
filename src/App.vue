@@ -33,10 +33,19 @@ import FileForm from './components/FileForm'
 import FileView from './components/FileView'
 
 export default {
+  props: ['localStorage'],
   data () {
     return {
       selectedFile: null,
       files: []
+    }
+  },
+  created () {
+    if (this.localStorage) {
+      try {
+        this.files = JSON.parse(this.localStorage.getItem('files'))
+        this.selectedFile = this.files.filter(f => f.selected)[0]
+      } catch (e) {}
     }
   },
   methods: {
@@ -56,10 +65,24 @@ export default {
       this.selectedFile = file
     },
     removeFile (file) {
+      if (file === this.selectedFile) {
+        this.selectedFile = null
+      }
       this.files.splice(this.files.indexOf(file), 1)
     },
     renameFile (file, newName) {
       file.name = newName
+    },
+    saveData () {
+      this.localStorage && this.localStorage.setItem('files', JSON.stringify(this.files))
+    }
+  },
+  watch: {
+    files: {
+      handler (newValue, oldValue) {
+        this.saveData()
+      },
+      deep: true
     }
   },
   components: {

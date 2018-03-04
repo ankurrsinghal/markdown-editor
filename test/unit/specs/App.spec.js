@@ -2,6 +2,18 @@ import { mount } from '@vue/test-utils'
 import App from '@/App'
 import FileView from '@/components/FileView'
 
+class LocalStorage {
+  storage = {
+
+  }
+  setItem (key, value) {
+    this.storage[key] = value
+  }
+  getItem (key) {
+    return this.storage[key]
+  }
+}
+
 describe('App.vue', () => {
   let wrapper
   beforeEach(() => {
@@ -153,5 +165,99 @@ describe('App.vue', () => {
     })
     fileView.find('input[type="text"]').trigger('click')
     expect(wrapper.vm.selectedFile).toBeNull()
+  })
+
+  describe('LocalStorage', () => {
+    let wrapper
+    let localStorage = new LocalStorage()
+    beforeEach(() => {
+      wrapper = mount(App, {
+        propsData: {
+          localStorage
+        }
+      })
+    })
+
+    test('it should have a property to accept a localStorage dependency', () => {
+      expect(wrapper.vm.localStorage).toBeDefined()
+    })
+
+    test('it should save the files array in localStorage when a file is created', () => {
+      wrapper.vm.createFile('New File')
+      wrapper.update()
+      expect(localStorage.getItem('files')).toBeTruthy()
+    })
+
+    test('it should have a saveData method', () => {
+      expect(typeof wrapper.vm.saveData).toBe('function')
+    })
+
+    test('it should call saveData whenever files data property is changed', () => {
+      wrapper.setMethods({
+        saveData: jest.fn()
+      })
+      wrapper.vm.createFile('New File')
+      wrapper.update()
+      expect(wrapper.vm.saveData).toHaveBeenCalled()
+    })
+
+    test('saveData should set files in the localStorage', () => {
+      wrapper.vm.createFile('New File')
+      wrapper.update()
+      expect(wrapper.vm.localStorage.getItem('files')).toBeTruthy()
+    })
+
+    test('it should parse the localStorage key files and set it to files data property', () => {
+      let files = [
+        {
+          name: 'New File',
+          selected: true,
+          favorite: true,
+          content: '**Hello**'
+        }
+      ]
+
+      let localStorage = new LocalStorage()
+      localStorage.setItem('files', JSON.stringify(files))
+      let wrapper = mount(App, {
+        propsData: {
+          localStorage
+        }
+      })
+      expect(wrapper.vm.files.length).toBe(1)
+      expect(wrapper.vm.files[0].name).toBe(files[0].name)
+    })
+
+    test('it should set files to empty array if data is corrupt', () => {
+      let localStorage = new LocalStorage()
+      localStorage.setItem('files', ')(')
+      let wrapper = mount(App, {
+        propsData: {
+          localStorage
+        }
+      })
+      expect(wrapper.vm.files.length).toBe(0)
+    })
+
+    test('it should set the selectedFile for the file whose selected is true', () => {
+      let files = [
+        {
+          name: 'New File',
+          selected: true,
+          favorite: true,
+          content: '**Hello**'
+        }
+      ]
+
+      let localStorage = new LocalStorage()
+      localStorage.setItem('files', JSON.stringify(files))
+      let wrapper = mount(App, {
+        propsData: {
+          localStorage
+        }
+      })
+      expect(wrapper.vm.selectedFile).toBeTruthy()
+      expect(wrapper.vm.selectedFile.name).toBe(files[0].name)
+    })
   })
 })
