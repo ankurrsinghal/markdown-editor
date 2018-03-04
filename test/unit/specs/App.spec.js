@@ -239,6 +239,17 @@ describe('App.vue', () => {
       expect(wrapper.vm.files.length).toBe(0)
     })
 
+    test('it should set files to empty array if data is corrupt', () => {
+      let localStorage = new LocalStorage()
+      localStorage.setItem('files', 'null')
+      let wrapper = mount(App, {
+        propsData: {
+          localStorage
+        }
+      })
+      expect(wrapper.vm.files.length).toBe(0)
+    })
+
     test('it should set the selectedFile for the file whose selected is true', () => {
       let files = [
         {

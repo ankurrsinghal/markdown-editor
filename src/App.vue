@@ -43,7 +43,7 @@ export default {
   created () {
     if (this.localStorage) {
       try {
-        this.files = JSON.parse(this.localStorage.getItem('files'))
+        this.files = JSON.parse(this.localStorage.getItem('files')) || []
         this.selectedFile = this.files.filter(f => f.selected)[0]
       } catch (e) {}
     }
